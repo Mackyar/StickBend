@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>StickBend User Guide</title>
+<style>
+@font-face { font-family: Outfit; font-weight: 400; src: url("../../Resources/Outfit-Regular.ttf"); }
+@font-face { font-family: Outfit; font-weight: 600; src: url("../../Resources/Outfit-SemiBold.ttf"); }
+@font-face { font-family: Outfit; font-weight: 700; src: url("../../Resources/Outfit-Bold.ttf"); }
+
+@page {
+  size: A4;
+  margin: 16mm 15mm 18mm;
+  @bottom-left  { content: "StickBend User Guide · Macky Ar · v0.1.0"; font: 400 7pt Outfit; color: #8a909b; }
+  @bottom-right { content: counter(page) " / " counter(pages); font: 400 7pt Outfit; color: #8a909b; }
+}
+@page cover { margin: 11mm 11mm 18mm; }
+
+* { box-sizing: border-box; }
+html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+body { font-family: Outfit, sans-serif; font-size: 10.2pt; line-height: 1.5; color: #1c2331; margin: 0; }
+b, strong { font-weight: 600; color: #111827; }
+a { color: #1d4f91; text-decoration: none; }
+h1 { font-size: 21pt; font-weight: 700; letter-spacing: -0.02em; color: #0f1626; margin: 0 0 12px; break-after: avoid; }
+h2 { font-size: 13pt; font-weight: 700; color: #0f1626; margin: 0; display: flex; align-items: center; gap: 8px; break-after: avoid; }
+h3 { font-size: 10.5pt; font-weight: 700; margin: 12px 0 4px; color: #0f1626; break-after: avoid; }
+p { margin: 6px 0; }
+ul, ol { margin: 6px 0; padding-left: 18px; }
+li { margin: 2px 0; }
+.page { break-before: page; }
+.muted { color: #6b7280; font-size: 9pt; }
+code, .key { font-family: Outfit, sans-serif; font-weight: 600; background: #eef1f5; border-radius: 4px; padding: 0 4px; font-size: 9.4pt; }
+
+/* Cover */
+.cover-page { page: cover; }
+.cover {
+  height: 266mm; border-radius: 6mm; color: #fff; padding: 22mm 14mm 16mm;
+  background: linear-gradient(165deg, #13294b 0%, #134a5e 55%, #0f6e64 100%);
+  display: flex; flex-direction: column;
+}
+.kicker { font-size: 8.5pt; font-weight: 600; letter-spacing: 0.32em; text-transform: uppercase; color: #dafa9c; }
+.cover h1 { color: #fff; font-size: 40pt; line-height: 1.05; letter-spacing: -0.03em; margin: 14mm 0 6mm; }
+.cover .sub { font-size: 13pt; line-height: 1.45; color: #e6edf3; max-width: 135mm; }
+.chips { margin-top: 18mm; display: flex; flex-wrap: wrap; gap: 6px; max-width: 160mm; }
+.chips span { border: 1px solid rgba(255,255,255,0.45); background: rgba(255,255,255,0.08); border-radius: 999px; padding: 3px 11px; font-size: 8.8pt; }
+.cover .meta { margin-top: auto; font-size: 9.6pt; line-height: 1.55; color: #e6edf3; }
+.cover .meta b { color: #fff; }
+
+/* How-to cards */
+.how { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 6px 0 16px; }
+.how div { background: #eef2f7; border-top: 3px solid #1f2d44; border-radius: 8px; padding: 10px 12px; font-size: 9.4pt; }
+.how h3 { margin: 0 0 4px; }
+
+/* Tables */
+table { width: 100%; border-collapse: collapse; margin: 6px 0; font-size: 9.4pt; }
+td, th { padding: 7px 8px; border-bottom: 1px solid #e5e8ee; vertical-align: top; text-align: left; }
+th { font-weight: 600; color: #6b7280; font-size: 8.4pt; letter-spacing: 0.06em; text-transform: uppercase; }
+td.l { font-weight: 600; width: 27%; color: #111827; }
+table.toc td.l { width: 18%; }
+
+/* Section cards */
+.card { border: 1px solid #e3e7ee; border-radius: 10px; padding: 13px 16px; margin: 0 0 12px; break-inside: avoid; }
+.card.flow { break-inside: auto; }
+.badge { background: #b4541d; color: #fff; font-size: 8.6pt; font-weight: 700; border-radius: 4px; padding: 1px 6px; }
+.line { background: #fbf2c4; color: #6b4300; font-weight: 600; border-radius: 4px; padding: 6px 10px; margin: 8px 0; }
+.trap { background: #fde6e6; border-left: 4px solid #c62828; border-radius: 4px; padding: 6px 10px; margin: 8px 0; font-size: 9.6pt; }
+.trap b { color: #8f1d1d; }
+.tip { background: #e8f1fb; border-left: 4px solid #2b5fab; border-radius: 4px; padding: 6px 10px; margin: 8px 0; font-size: 9.6pt; }
+.tip b { color: #1d3f72; }
+.tag { display: inline-block; font-size: 7.6pt; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 4px; padding: 1px 6px; margin-left: 6px; vertical-align: 2px; }
+.tag.ok { background: #e3f6dc; color: #2c6a12; }
+.tag.exp { background: #eef1f5; color: #4b5563; }
+
+/* Figures */
+.figure { border: 1px solid #e3e7ee; border-radius: 10px; padding: 10px; margin: 0 0 12px; break-inside: avoid; }
+.figure img { width: 78%; border-radius: 6px; display: block; margin: 0 auto; }
+.figure .cap { font-size: 8.4pt; color: #6b7280; margin-top: 6px; }
+
+/* Signal flow */
+.chain { display: flex; align-items: center; gap: 8px; margin: 10px 0 4px; }
+.chain .box { flex: 1; text-align: center; border: 1px solid #d6dbe3; border-radius: 8px; padding: 9px 6px; font-size: 9.2pt; background: #f7f9fb; }
+.chain .box b { display: block; font-size: 10pt; }
+.chain .box.hot { background: #0e121b; border-color: #0e121b; color: #f2f2ee; }
+.chain .box.hot b { color: #dafa9c; }
+.chain .arrow { color: #8a909b; font-weight: 700; }
+
+/* Creator */
+.creator { background: linear-gradient(165deg, #13294b 0%, #134a5e 60%, #0f6e64 100%); color: #e6edf3; border-radius: 12px; padding: 18px 20px; break-inside: avoid; }
+.creator h2 { color: #fff; font-size: 17pt; }
+.creator .kicker { margin-bottom: 6px; }
+.creator b { color: #fff; }
+.links { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px 18px; margin-top: 12px; }
+.links div { font-size: 9.6pt; border-top: 1px solid rgba(255,255,255,0.18); padding-top: 6px; }
+.links span { display: block; font-size: 7.6pt; letter-spacing: 0.18em; text-transform: uppercase; color: #dafa9c; font-weight: 600; }
+.links a { color: #fff; }
+</style>
+</head>
+<body>
+
+<!-- ============================== COVER ============================== -->
+<section class="cover-page">
+  <div class="cover">
+    <div class="kicker">Macky Ar · Plugin Manual · Version 0.1.0</div>
+    <h1>StickBend<br>User Guide</h1>
+    <div class="sub">Play your keyboard. Bend with your thumb. Everything you need to install StickBend, set it up in your DAW and turn a game controller into an expressive instrument.</div>
+    <div class="chips">
+      <span>Install</span><span>Quick start</span><span>The interface</span><span>Pitch bend</span><span>MIDI CC</span>
+      <span>Deadzone</span><span>Stick outputs</span><span>Recording and editing</span><span>REAPER</span><span>Bitwig</span>
+      <span>FL Studio</span><span>Ableton Live</span><span>Cubase</span><span>Studio One</span><span>Troubleshooting</span><span>About the creator</span>
+    </div>
+    <div class="meta">
+      Plugin: <b>StickBend 0.1.0</b> for Windows · VST3 and CLAP<br>
+      Made by <b>Macky Ar</b> (Mahesh Arora) · <a style="color:#dafa9c" href="https://www.mackyar.com">mackyar.com</a><br>
+      Free and open source under AGPL-3.0 · Collects no data
+    </div>
+  </div>
+</section>
+
+<!-- ============================== HOW TO USE ============================== -->
+<section class="page">
+  <h1>How to use this guide</h1>
+  <div class="how">
+    <div><h3>1. Read the yellow line</h3>Every section opens with the idea in one sentence. If you read nothing else, read that.</div>
+    <div><h3>2. Follow the steps</h3>Numbered steps are in the order you do them. Settings are in <span class="key">bold boxes</span> like this.</div>
+    <div><h3>3. Check the red box</h3>"Watch out" boxes flag the mistakes that stop StickBend from working.</div>
+  </div>
+
+  <table class="toc">
+    <tr><td class="l">Section 1</td><td><b>What StickBend does</b>: the idea, and where it sits in your signal chain</td></tr>
+    <tr><td class="l">Section 2</td><td><b>Install</b>: requirements, controllers that work, copying the files</td></tr>
+    <tr><td class="l">Section 3</td><td><b>Quick start in REAPER</b>: from zero to bending in five steps</td></tr>
+    <tr><td class="l">Section 4</td><td><b>The interface</b>: every control on screen, explained</td></tr>
+    <tr><td class="l">Section 5</td><td><b>Parameters</b>: the full list with ranges and defaults, send modes, useful CC numbers, deadzone</td></tr>
+    <tr><td class="l">Section 6</td><td><b>Stick outputs</b>: linking the sticks to any knob in your DAW</td></tr>
+    <tr><td class="l">Section 7</td><td><b>Recording and editing</b>: keeping every bend editable after you record</td></tr>
+    <tr><td class="l">Section 8</td><td><b>Other DAWs</b>: Bitwig, FL Studio, Ableton Live, Cubase, Studio One</td></tr>
+    <tr><td class="l">Section 9</td><td><b>Troubleshooting</b>: symptoms and fixes</td></tr>
+    <tr><td class="l">Last pages</td><td><b>Privacy, licence</b> and <b>about the creator</b></td></tr>
+  </table>
+
+  <p class="muted">Setups marked <span class="tag ok">Tested</span> were checked by hand with this version. Setups marked <span class="tag exp">Expected</span> follow each DAW's standard routing for plugins that output MIDI but have not been tested yet. Menu names can differ between DAW versions.</p>
+</section>
+
+<!-- ============================== 1. WHAT IT DOES ============================== -->
+<section class="page">
+  <h1>1 · What StickBend does</h1>
+
+  <div class="card">
+    <h2><span class="badge">1.1</span> The idea</h2>
+    <div class="line">StickBend reads your game controller's sticks and turns them into MIDI pitch bend and CC messages, mixed in with the notes you play on your keyboard.</div>
+    <p>Your keyboard notes pass straight through untouched. StickBend only adds new messages when you move a stick, so you play with one hand on the keys and bend, swell or wobble with your thumb.</p>
+    <p>Everything it sends is ordinary MIDI. Your synth sees it exactly as if you had moved a pitch wheel or mod wheel, and your DAW records it the same way, so it stays editable afterwards.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">1.2</span> Where it sits</h2>
+    <div class="line">StickBend always goes before your instrument, never after it.</div>
+    <div class="chain">
+      <div class="box"><b>MIDI keyboard</b>notes</div><div class="arrow">→</div>
+      <div class="box hot"><b>StickBend</b>notes + bend + CC</div><div class="arrow">→</div>
+      <div class="box"><b>Your synth</b>plays it all</div><div class="arrow">→</div>
+      <div class="box"><b>Audio out</b>speakers</div>
+    </div>
+    <div class="trap"><b>Watch out:</b> if StickBend is placed after the synth, the synth never receives the bends and you hear nothing change.</div>
+  </div>
+
+  <div class="figure">
+    <img src="../screenshot.png" alt="StickBend interface">
+    <div class="cap">StickBend with the left stick pushed up and right, RT half pressed, and RB, A and D-pad right held.</div>
+  </div>
+</section>
+
+<!-- ============================== 2. INSTALL ============================== -->
+<section class="page">
+  <h1>2 · Install</h1>
+
+  <div class="card">
+    <h2><span class="badge">2.1</span> What you need</h2>
+    <table>
+      <tr><td class="l">Computer</td><td>Windows 10 or 11, 64-bit</td></tr>
+      <tr><td class="l">DAW</td><td>Any host that loads VST3 or CLAP plugins and accepts MIDI from plugins: REAPER, Bitwig Studio, FL Studio, Cubase, Studio One, Ableton Live and others</td></tr>
+      <tr><td class="l">Controller</td><td>An Xbox-compatible (XInput) controller, wired, wireless adapter or Bluetooth</td></tr>
+      <tr><td class="l">Keyboard</td><td>Any MIDI keyboard. StickBend also works with no keyboard at all, for drawing in bends over existing MIDI.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">2.2</span> Controllers that work</h2>
+    <div class="line">If Windows sees it as an Xbox controller, StickBend can use it.</div>
+    <ul>
+      <li><b>Works directly:</b> Xbox One and Xbox Series controllers, Xbox 360 controllers, most third-party PC pads, 8BitDo pads in X-input mode.</li>
+      <li><b>Works with a helper:</b> PlayStation DualShock 4 and DualSense, using the free tool <a href="https://ds4-windows.com/">DS4Windows</a>, which makes them appear as Xbox controllers.</li>
+      <li><b>Not yet:</b> Nintendo Switch Pro and pads that only speak DirectInput.</li>
+    </ul>
+    <div class="tip"><b>Tip:</b> up to four controllers can be connected. Each gets a slot from 1 to 4, and the <span class="key">Pad</span> menu in StickBend picks which one to listen to.</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">2.3</span> Copy the files</h2>
+    <ol>
+      <li>Close your DAW.</li>
+      <li>Copy <span class="key">StickBend.vst3</span> into <span class="key">C:\Program Files\Common Files\VST3\</span></li>
+      <li>Copy <span class="key">StickBend.clap</span> into <span class="key">C:\Program Files\Common Files\CLAP\</span></li>
+      <li>Open your DAW and rescan plugins. StickBend appears under the vendor <b>Macky Ar</b>.</li>
+    </ol>
+    <div class="trap"><b>Watch out:</b> Windows locks plugin files while a DAW has them open. Always close the DAW before replacing StickBend with a newer version, or the copy will fail.</div>
+    <p class="muted">Which format? Use CLAP if your DAW supports it (REAPER, Bitwig). It carries MIDI natively. Use VST3 everywhere else.</p>
+  </div>
+</section>
+
+<!-- ============================== 3. QUICK START ============================== -->
+<section class="page">
+  <h1>3 · Quick start in REAPER <span class="tag ok">Tested</span></h1>
+
+  <div class="card">
+    <h2><span class="badge">3.1</span> Five steps to your first bend</h2>
+    <div class="line">Put StickBend in the track's Input FX, your synth in the normal FX chain, arm the track and move the stick.</div>
+    <ol>
+      <li>Create a track and add your synth to its normal FX chain as usual.</li>
+      <li>Click the small <span class="key">IN FX</span> button on the track (Input FX) and add <b>StickBend</b>.</li>
+      <li>Set the track's record input to your MIDI keyboard, then <b>arm</b> the track and turn <b>record monitoring</b> on.</li>
+      <li>Check the status pill at the top of StickBend says <b>Controller live</b>.</li>
+      <li>Hold a note and push the left stick sideways. The pitch bends. Push it up or down and the mod wheel moves.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">3.2</span> Why Input FX?</h2>
+    <p>REAPER records what comes <b>out of the Input FX</b>. With StickBend there, every stick move is recorded into your MIDI item as real pitch bend and CC data that you can edit later.</p>
+    <p>If you put StickBend in the normal FX chain instead, you still hear the bends live, but REAPER records only your keyboard, so the bends vanish from the recording.</p>
+    <div class="trap"><b>Watch out:</b> Input FX only run while the track is armed with monitoring on. If StickBend seems dead, check the arm button first.</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">3.3</span> Default mapping</h2>
+    <table>
+      <tr><th>Axis</th><th>Sends</th><th>Effect</th></tr>
+      <tr><td class="l">Left stick X</td><td>Pitch Bend</td><td>Left bends down, right bends up</td></tr>
+      <tr><td class="l">Left stick Y</td><td>CC 1, from 0</td><td>Mod wheel. Up or down raises it, centre returns to 0</td></tr>
+      <tr><td class="l">Right stick X</td><td>Off (CC 11 ready)</td><td>Turn on for expression</td></tr>
+      <tr><td class="l">Right stick Y</td><td>Off (CC 74 ready)</td><td>Turn on for brightness or filter cutoff</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ============================== 4. INTERFACE ============================== -->
+<section class="page">
+  <h1>4 · The interface</h1>
+
+  <div class="card">
+    <h2><span class="badge">4.1</span> Header</h2>
+    <table>
+      <tr><td class="l">Status pill</td><td><b>Controller live</b> (lime dot) when the selected pad is connected. <b>No controller</b> when it is not. StickBend checks again about once a second, so you can plug in a pad at any time.</td></tr>
+      <tr><td class="l">Pad</td><td>Which controller slot (1 to 4) to read. Slot 1 is the first pad Windows connected.</td></tr>
+      <tr><td class="l">Ch</td><td>The MIDI channel (1 to 16) for the bend and CC messages. Match it to the channel your synth listens on. Most synths listen on all channels, so 1 is usually fine.</td></tr>
+      <tr><td class="l">About</td><td>Version, credits, links and the privacy summary.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">4.2</span> Stick cards</h2>
+    <p>One card per stick, one row per axis. Each row has three parts:</p>
+    <table>
+      <tr><td class="l">Sends</td><td>What this axis sends: <b>Off</b>, <b>Pitch Bend</b>, <b>CC centred</b> or <b>CC from 0</b>. Explained in section 5.2.</td></tr>
+      <tr><td class="l">CC</td><td>The CC number, 0 to 127. Only active when Sends is one of the CC modes, otherwise it is dimmed.</td></tr>
+      <tr><td class="l">Out</td><td>The value being sent right now, with a small meter. Pitch bend shows -8192 to +8191 (0 is centre). CC shows 0 to 127.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">4.3</span> Controller visualizer</h2>
+    <div class="line">The picture mirrors your real controller, so you can see exactly what StickBend is reading.</div>
+    <ul>
+      <li><b>Sticks</b> move live. The knob turns lime when it leaves the deadzone and a line shows the direction.</li>
+      <li><b>The shaded cross</b> inside each stick is the deadzone. Inside the vertical band, X sends nothing. Inside the horizontal band, Y sends nothing.</li>
+      <li><b>Triggers, bumpers, face buttons, D-pad, Back, Start</b> and <b>stick clicks</b> light up when pressed, handy for checking the pad works.</li>
+      <li><b>Deadzone</b> slider at the top right of this panel. Drag it or double-click to type a value.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================== 5. PARAMETERS ============================== -->
+<section class="page">
+  <h1>5 · Parameters</h1>
+
+  <div class="card">
+    <h2><span class="badge">5.1</span> Full parameter list</h2>
+    <p>These are the names you see in your DAW's automation and parameter lists.</p>
+    <table>
+      <tr><th>Parameter</th><th>Range</th><th>Default</th><th>What it does</th></tr>
+      <tr><td class="l">Controller</td><td>1 to 4</td><td>1</td><td>Controller slot to read</td></tr>
+      <tr><td class="l">MIDI Channel</td><td>1 to 16</td><td>1</td><td>Channel for outgoing bend and CC</td></tr>
+      <tr><td class="l">Deadzone</td><td>0 to 50%</td><td>24%</td><td>How far a stick must move before it sends anything</td></tr>
+      <tr><td class="l">Left X / Left Y / Right X / Right Y sends</td><td>Off, Pitch Bend, CC centred, CC from 0</td><td>Bend, CC from 0, Off, Off</td><td>What each axis sends</td></tr>
+      <tr><td class="l">Left X / Left Y / Right X / Right Y CC #</td><td>0 to 127</td><td>1, 1, 11, 74</td><td>CC number when the axis is in a CC mode</td></tr>
+      <tr><td class="l">Stick Left X / Left Y / Right X / Right Y</td><td>0 to 1</td><td>0.5</td><td>Follow the sticks while you play. When the stick rests, automation on these plays back as bends and CCs (sections 6 and 7).</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">5.2</span> The four send modes</h2>
+    <table>
+      <tr><td class="l">Off</td><td>The axis sends nothing.</td></tr>
+      <tr><td class="l">Pitch Bend</td><td>Full 14-bit pitch bend, the same message a pitch wheel sends. Centre is no bend. <b>How far</b> the note bends (2 semitones, 12, and so on) is set in your synth, not in StickBend.</td></tr>
+      <tr><td class="l">CC centred</td><td>Rests at 64. One direction goes down to 0, the other up to 127. Good for things that have a middle: pan (CC 10), or sweeping a filter both ways.</td></tr>
+      <tr><td class="l">CC from 0</td><td>Rests at 0. Pushing either way raises it to 127, so the stick works like a spring-loaded mod wheel. Good for vibrato depth (CC 1).</td></tr>
+    </table>
+    <div class="trap"><b>Watch out:</b> pitch bend not bending far enough, or at all? Check the synth's own pitch bend range. If it is set to 0, StickBend's bends do nothing.</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">5.3</span> Useful CC numbers</h2>
+    <table>
+      <tr><td class="l">CC 1 · Mod wheel</td><td>Vibrato or the synth's main modulation. The classic choice.</td></tr>
+      <tr><td class="l">CC 2 · Breath</td><td>Expression in many wind and string libraries</td></tr>
+      <tr><td class="l">CC 7 · Volume</td><td>Channel volume</td></tr>
+      <tr><td class="l">CC 10 · Pan</td><td>Use with CC centred</td></tr>
+      <tr><td class="l">CC 11 · Expression</td><td>Swells and dynamics in orchestral libraries</td></tr>
+      <tr><td class="l">CC 71 · Resonance</td><td>Filter resonance on many synths</td></tr>
+      <tr><td class="l">CC 74 · Brightness</td><td>Filter cutoff on many synths</td></tr>
+    </table>
+    <div class="trap"><b>Watch out:</b> CC 7 or CC 11 in <b>CC from 0</b> mode drops the volume to zero whenever the stick is centred. Use them with care, or pick CC centred.</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">5.4</span> Deadzone</h2>
+    <div class="line">The deadzone stops a resting stick from sending tiny wobbles, so your notes stay perfectly in tune when you let go.</div>
+    <p>Real sticks never rest exactly at the centre. The deadzone ignores small movements near the middle, then rescales the rest so a full push still reaches the full value. Each axis has its own deadzone, which is why it is drawn as a cross.</p>
+    <ul>
+      <li><b>15 to 30%</b> suits most controllers. The default 24% matches Microsoft's recommendation.</li>
+      <li>Raise it if notes drift slightly sharp or flat when the stick is untouched.</li>
+      <li>Lower it for finer, earlier response on a new controller.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================== 6. OUTPUTS ============================== -->
+<section style="margin-top: 18px">
+  <h1>6 · Stick outputs</h1>
+
+  <div class="card">
+    <h2><span class="badge">6.1</span> Control any knob</h2>
+    <div class="line">The four Stick parameters follow the sticks, so you can link them to any knob on any plugin.</div>
+    <p>StickBend exposes <b>Stick Left X</b>, <b>Stick Left Y</b>, <b>Stick Right X</b> and <b>Stick Right Y</b> as plugin parameters. Each rests at 0.5 when the stick is centred and moves from 0 to 1 across its full travel. They move whatever the Sends setting is, even if the axis is Off.</p>
+    <p>They also work the other way. While a stick is at rest, StickBend <b>plays whatever its Stick parameter says</b>, so recorded or hand-drawn Stick envelopes turn into real pitch bend and CC on playback. Move the stick and it takes over again.</p>
+    <h3>In REAPER: parameter modulation <span class="tag exp">Expected</span></h3>
+    <ol>
+      <li>Open the plugin you want to control, for example a reverb on the same track.</li>
+      <li>Click the knob you want, then click <span class="key">Param</span> in the FX window and choose <span class="key">Parameter modulation/MIDI link</span>.</li>
+      <li>Tick <span class="key">Link from MIDI or FX parameter</span> and pick <b>StickBend: Stick Right Y</b>.</li>
+      <li>Adjust the scale and offset so the knob moves over the range you want.</li>
+    </ol>
+    <div class="tip"><b>Tip:</b> to drive a plugin on another track, use the Stick outputs as automation (next section) or send StickBend's MIDI to that track instead.</div>
+  </div>
+</section>
+
+<!-- ============================== 7. RECORDING ============================== -->
+<section class="page">
+  <h1>7 · Recording and editing</h1>
+
+  <div class="card">
+    <h2><span class="badge">7.1</span> Two ways to record, both editable</h2>
+    <div class="line">Record the stick as MIDI data in the clip, or as automation envelopes. Either way you can redraw it later.</div>
+    <table>
+      <tr><th></th><th>As MIDI data</th><th>As automation</th></tr>
+      <tr><td class="l">What is recorded</td><td>Pitch bend and CC messages inside the MIDI item</td><td>Envelopes for the Stick parameters, which StickBend plays back as bends and CCs</td></tr>
+      <tr><td class="l">Where you edit it</td><td>The MIDI editor's CC lanes (Pitch, CC 1 and so on)</td><td>The track's automation lanes</td></tr>
+      <tr><td class="l">Best for</td><td>Bends and vibrato that belong to the performance</td><td>Reshaping a performance as smooth curves, and driving other plugins' knobs</td></tr>
+      <tr><td class="l">How in REAPER <span class="tag ok">Tested</span></td><td>StickBend in Input FX, arm, record</td><td>StickBend in the normal FX chain, automation mode <span class="key">Latch</span> or <span class="key">Write</span>, arm the Stick envelopes, play. Switch back to <span class="key">Read</span> to hear it. To record with the StickBend window closed, see section 9.</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">7.2</span> Playing back without fighting your edits</h2>
+    <p>StickBend only sends a message when a stick <b>moves</b>. A centred stick is completely silent, so on playback your recorded and edited bends play exactly as written.</p>
+    <div class="trap"><b>Watch out:</b> if you touch the stick during playback with StickBend still active on the track, the new movement mixes with the recorded data. Disarm the track (Input FX) or bypass StickBend while you listen back.</div>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">7.3</span> Editing tips</h2>
+    <ul>
+      <li>Select a stretch of CC points in the lane and delete or redraw it with the pencil to fix a single bend without replaying the take.</li>
+      <li>Draw a straight line back to centre at the end of a bend to make sure the next note starts in tune.</li>
+      <li>Copy a vibrato shape you like and paste it under other notes.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ============================== 8. OTHER DAWS ============================== -->
+<section class="page">
+  <h1>8 · Other DAWs</h1>
+  <p class="muted">The idea is the same everywhere: StickBend's MIDI output must reach your synth. These are the standard routings for each DAW. They are marked <span class="tag exp">Expected</span> because they have not been tested with this version yet.</p>
+
+  <div class="card">
+    <h2><span class="badge">8.1</span> Bitwig Studio <span class="tag exp">Expected</span></h2>
+    <p>Load the <b>CLAP</b> version. On an instrument track, drop StickBend into the device chain <b>before</b> your instrument. Notes and bends flow straight into it. Record as normal and edit bends in the clip's expression lanes.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">8.2</span> FL Studio <span class="tag exp">Expected</span></h2>
+    <ol>
+      <li>Load StickBend (VST3) in the Channel Rack. Open its wrapper settings (gear icon) and set an <span class="key">Output port</span>, for example 1.</li>
+      <li>Load your synth and set its <span class="key">Input port</span> to the same number.</li>
+      <li>Select StickBend's channel and play. Your keyboard goes in, the synth plays with bends.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">8.3</span> Ableton Live <span class="tag exp">Expected</span></h2>
+    <ol>
+      <li>Put StickBend (VST3) on a MIDI track that receives your keyboard. Set monitoring to <span class="key">In</span>.</li>
+      <li>On a second MIDI track with your synth, set <span class="key">MIDI From</span> to the first track and choose <b>StickBend</b> in the second menu.</li>
+      <li>Arm the synth track to record the bends with your notes.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">8.4</span> Cubase and Studio One <span class="tag exp">Expected</span></h2>
+    <p>Load StickBend (VST3) as an instrument on its own track that receives your keyboard. Then set the input of your synth track to StickBend's MIDI output. Look for "plugin MIDI output" in your DAW's manual if the menus differ.</p>
+  </div>
+
+  <div class="tip"><b>Tip:</b> tried StickBend in one of these DAWs? Send the steps that worked to <a href="mailto:macky.business725@gmail.com">macky.business725@gmail.com</a> and they will go into the next version of this guide.</div>
+</section>
+
+<!-- ============================== 9. TROUBLESHOOTING ============================== -->
+<section class="page">
+  <h1>9 · Troubleshooting</h1>
+  <table>
+    <tr><th>Symptom</th><th>Fix</th></tr>
+    <tr><td class="l">Status says No controller</td><td>Check the pad is on and connected. Try the other slots in the <span class="key">Pad</span> menu. PlayStation pads need DS4Windows running.</td></tr>
+    <tr><td class="l">Visualizer moves but nothing bends</td><td>StickBend must be before the synth. In REAPER use Input FX with the track armed and monitoring on. Check the synth's pitch bend range is not 0.</td></tr>
+    <tr><td class="l">Live bends work but disappear from the recording</td><td>In REAPER, StickBend is in the normal FX chain, so only your keys are recorded into the item. Move it to Input FX, or record the Stick envelopes instead (section 7.1).</td></tr>
+    <tr><td class="l">Envelope does not record</td><td>Set the track to <span class="key">Latch</span> or <span class="key">Write</span> and arm the Stick envelope. Use version 0.1.0 or later.</td></tr>
+    <tr><td class="l">Envelope only records while the StickBend window is open</td><td>REAPER ignores parameter changes from plugins with closed windows by default. In <span class="key">Preferences</span> → <span class="key">Plug-ins</span> → <span class="key">VST</span>, under VST compatibility, set <span class="key">Parameter automation notifications</span> to <b>process all notifications</b>. Or keep the window open, or record as MIDI through Input FX instead.</td></tr>
+    <tr><td class="l">Envelope recorded but playback has no bend</td><td>Check the axis's <span class="key">Sends</span> is still Pitch Bend or CC, the envelope isn't bypassed, and the track is in <span class="key">Read</span> or <span class="key">Latch</span> mode rather than Trim/Read. Leave the stick untouched during playback.</td></tr>
+    <tr><td class="l">Notes slightly out of tune at rest</td><td>Raise the <span class="key">Deadzone</span>. Your stick rests a little off centre.</td></tr>
+    <tr><td class="l">Synth ignores the bends</td><td>Match the <span class="key">Ch</span> setting to the channel your synth listens on.</td></tr>
+    <tr><td class="l">Volume drops to silence</td><td>An axis is sending CC 7 or CC 11 in CC from 0 mode. Change the CC number or use CC centred.</td></tr>
+    <tr><td class="l">Cannot replace the plugin file</td><td>Close the DAW first. Windows locks plugins that are in use.</td></tr>
+    <tr><td class="l">VST3 version misbehaves in your DAW</td><td>Try the CLAP version if your DAW supports it.</td></tr>
+  </table>
+  <p class="muted">Still stuck? Email <a href="mailto:macky.business725@gmail.com">macky.business725@gmail.com</a> with your DAW name and version, your controller model, and what the status pill says.</p>
+</section>
+
+<!-- ============================== PRIVACY + LICENCE + CREATOR ============================== -->
+<section class="page">
+  <h1>Privacy and licence</h1>
+
+  <div class="card">
+    <h2><span class="badge">P</span> Privacy</h2>
+    <div class="line">StickBend collects nothing and never goes online by itself.</div>
+    <p>No accounts, no analytics, no telemetry, no licence checks. Controller readings are turned into MIDI on the spot and never stored or sent anywhere. Your settings are saved by your DAW inside your project. The only time anything goes online is when you click a link in the About panel, which opens your own browser. The full policy is in <b>PRIVACY.md</b>.</p>
+  </div>
+
+  <div class="card">
+    <h2><span class="badge">L</span> Licence</h2>
+    <p>StickBend is free and open source under the <b>GNU Affero General Public License v3</b>. You can use it in any project, commercial or not, at no cost. Copyright (C) 2026 Mahesh Arora (Macky Ar). It comes with no warranty.</p>
+    <p class="muted">Built with JUCE (AGPL-3.0), the VST3 SDK, CLAP and clap-juce-extensions (all MIT) and the Outfit typeface (SIL Open Font License). Full notices are in THIRD_PARTY_NOTICES.md. VST is a registered trademark of Steinberg Media Technologies GmbH.</p>
+  </div>
+
+  <div class="creator">
+    <div class="kicker">About the creator</div>
+    <h2>Macky Ar</h2>
+    <p>StickBend was built by musician <b>Macky Ar</b> (Mahesh Arora), a multi-instrumentalist who wanted pitch bend to feel as natural as moving a thumb.</p>
+    <p>Pitch wheels are small, stiff and stuck at the far left of the keyboard. A game controller is cheap, familiar and comfortable to hold, and almost everyone already knows how to use one. StickBend turns it into an accessible expression tool, so bends, swells and vibrato are within reach of anyone, on any keyboard, including players who find a pitch wheel awkward to reach or grip.</p>
+    <div class="links">
+      <div><span>Website</span><a href="https://www.mackyar.com">mackyar.com</a></div>
+      <div><span>Spotify</span><a href="https://open.spotify.com/artist/1l0nNfz6ftZ5qgg8VcisYB">Macky Ar on Spotify</a></div>
+      <div><span>Bandcamp</span><a href="https://mackyar.bandcamp.com/">mackyar.bandcamp.com</a></div>
+      <div><span>YouTube</span><a href="https://www.youtube.com/@MackyAr">@MackyAr</a></div>
+      <div><span>Instagram</span><a href="https://www.instagram.com/macky_ar/">@macky_ar</a></div>
+      <div><span>Email</span><a href="mailto:macky.business725@gmail.com">macky.business725@gmail.com</a></div>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

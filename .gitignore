@@ -1,0 +1,6 @@
+# Build output and packaged releases (releases go on GitHub Releases, not in git)
+build/
+release/
+out/
+.vs/
+*.user
